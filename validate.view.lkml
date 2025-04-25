@@ -1,21 +1,20 @@
 
-view: enter_dev_mode {
-  sql_table_name: `looker-load-tests.lkr_enter_dev_mode.enter_dev_mode` ;;
+view: validate {
+  sql_table_name: `looker-load-tests.lkr_dev_mode_validate.run_googleapis_com_stdout` ;;
+
+  dimension: validate_duration {
+    type: number
+    sql: ${TABLE}.jsonPayload.validate_duration ;;
+  }
 
   dimension: total_duration {
-    description: "in seconds"
     type: number
     sql: ${TABLE}.jsonPayload.total_duration ;;
   }
 
   dimension: user_id {
     type: string
-    sql: ${TABLE}.jsonPayload.user_id ;;
-  }
-
-  dimension: event {
-    type: string
-    sql: ${TABLE}.jsonPayload.event ;;
+    sql: ${TABLE}.jsonPayload.admin_id ;;
   }
 
   dimension_group: start_time {
@@ -28,13 +27,30 @@ view: enter_dev_mode {
     sql: TIMESTAMP_SECONDS(CAST(${TABLE}.jsonPayload.end_time as INT64)) ;;
   }
 
+  dimension: event {
+    type: string
+    sql: ${TABLE}.jsonPayload.event ;;
+  }
+
+  measure: count {
+    type: count
+  }
+
   measure: avg_total_duration {
     type: average
     sql: ${total_duration} ;;
+    value_format_name: decimal_2
+  }
+
+  measure: avg_validate_duration {
+    type: average
+    sql: ${validate_duration} ;;
     value_format_name: decimal_2
   }
   measure: count_users {
     type: count_distinct
     sql: ${user_id} ;;
   }
+
+
 }

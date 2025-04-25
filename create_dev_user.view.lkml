@@ -1,10 +1,6 @@
 view: create_dev_user {
-  sql_table_name: `looker-load-tests.lkr_dev_mode_create.run_googleapis_com_stdout` ;;
+  sql_table_name: `looker-load-tests.lkr_enter_dev_mode.run_googleapis_com_stdout`  ;;
 
-
-  measure: count {
-    type: count
-  }
 
   dimension: user_id {
     type: string
@@ -43,13 +39,19 @@ view: create_dev_user {
     sql: ${TABLE}.jsonPayload.total_duration ;;
   }
 
+  measure: count {
+    type: count
+  }
+
   measure: avg_change_to_dev_duration {
     type: average
     sql: ${change_to_dev_duration} ;;
+    value_format_name: decimal_2
   }
   measure: avg_total_duration {
     type: average
     sql: ${total_duration} ;;
+    value_format_name: decimal_2
   }
   measure: count_users {
     type: count_distinct
